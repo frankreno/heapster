@@ -35,6 +35,7 @@ import (
 	"k8s.io/heapster/metrics/sinks/riemann"
 	"k8s.io/heapster/metrics/sinks/stackdriver"
 	"k8s.io/heapster/metrics/sinks/statsd"
+	"k8s.io/heapster/metrics/sinks/sumologic"
 	"k8s.io/heapster/metrics/sinks/wavefront"
 )
 
@@ -75,6 +76,8 @@ func (this *SinkFactory) Build(uri flags.Uri) (core.DataSink, error) {
 		return riemann.CreateRiemannSink(&uri.Val)
 	case "honeycomb":
 		return honeycomb.NewHoneycombSink(&uri.Val)
+	case "sumologic":
+		return sumologic.NewSumoLogicSink(&uri.Val)
 	default:
 		return nil, fmt.Errorf("Sink not recognized: %s", uri.Key)
 	}

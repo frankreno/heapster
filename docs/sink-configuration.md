@@ -362,6 +362,29 @@ Options can be set in query string, like this:
 For example,
 
     --sink="honeycomb:?dataset=mydataset&writekey=secretwritekey"
+    
+### Sumo Logic
+This sink supports monitoring metrics only.  To use the Sumo Logic sink you will first need to [create an HTTP Logs and Metrics source](https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/HTTP-Source).  Metrics are sent to Sumo Logic in [Carbon2 format](https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/HTTP-Source/Upload-Data-to-an-HTTP-Source#Sending_Metric_Data).  To use the Sumo Logic sink add the following flag:
+
+    --sink="sumologic:<SUMO_HTTP_SOURCE_URL><?<OPTIONS>>
+
+These options are available:
+* `dimensions` - Comma separated list of key values that will be added as dimensions to all metrics.
+* `metadata` - Comma separated list of key values that will be added as metadata to all metrics.
+
+Examples:
+
+    --sink="sumologic:https://endpoint1.collection.us2.sumologic.com/receiver/v1/http/123456"
+    --sink="sumologic:https://endpoint1.collection.us2.sumologic.com/receiver/v1/http/123456?dimensions=key1=value1,key2=value2&metadata=key=value"
+
+All metrics will have a `type` identifier with the following possible values:
+  * cluster
+  * node
+  * pod
+  * container
+  * sys-container
+  
+Metrics are sent in Carbon2.0 format.  All labels are sent as metadata.  Dimensions vary depending based on the type.
 
 ## Using multiple sinks
 
